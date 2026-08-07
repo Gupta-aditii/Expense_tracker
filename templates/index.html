@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Expense Tracker</title>
+
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+
+    <div class="header">
+
+        <h1>Expense Tracker</h1>
+
+        <p>
+            Manage and track your daily expenses
+        </p>
+
+    </div>
+
+
+    <!-- ==========================================
+         STATISTICS
+    =========================================== -->
+
+    <div class="stats-container">
+
+
+        <div class="stat-card">
+
+            <h3>Total Expense</h3>
+
+            <p>
+                ₹{{ "%.2f"|format(total_expense) }}
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>Total Records</h3>
+
+            <p>
+                {{ total_records }}
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>Average Expense</h3>
+
+            <p>
+                ₹{{ "%.2f"|format(average_expense) }}
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ==========================================
+         ADD EXPENSE
+    =========================================== -->
+
+    <div class="card">
+
+        <h2>Add Expense</h2>
+
+
+        <form
+            action="/add"
+            method="POST"
+        >
+
+
+            <label for="title">
+                Title
+            </label>
+
+            <input
+                id="title"
+                type="text"
+                name="title"
+                placeholder="Enter expense title"
+                required
+            >
+
+
+            <label for="amount">
+                Amount
+            </label>
+
+            <input
+                id="amount"
+                type="number"
+                name="amount"
+                placeholder="Enter amount"
+                step="0.01"
+                min="0"
+                required
+            >
+
+
+            <label for="category">
+                Category
+            </label>
+
+            <select
+                id="category"
+                name="category"
+                required
+            >
+
+                <option value="">
+                    Select Category
+                </option>
+
+                <option value="Food">
+                    Food
+                </option>
+
+                <option value="Travel">
+                    Travel
+                </option>
+
+                <option value="Shopping">
+                    Shopping
+                </option>
+
+                <option value="Bills">
+                    Bills
+                </option>
+
+                <option value="Entertainment">
+                    Entertainment
+                </option>
+
+            </select>
+
+
+            <label for="date">
+                Date
+            </label>
+
+            <input
+                id="date"
+                type="date"
+                name="date"
+                required
+            >
+
+
+            <button type="submit">
+                Add Expense
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- ==========================================
+         SEARCH AND FILTER
+    =========================================== -->
+
+    <div class="card">
+
+        <h2>Search & Filter</h2>
+
+
+        <form
+            action="/"
+            method="GET"
+            class="filter-form"
+        >
+
+
+            <!-- SEARCH -->
+
+            <div>
+
+                <label for="search">
+                    Search
+                </label>
+
+                <input
+                    id="search"
+                    type="text"
+                    name="search"
+                    placeholder="Search by title..."
+                    value="{{ search }}"
+                >
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div>
+
+                <label for="filter-category">
+                    Category
+                </label>
+
+                <select
+                    id="filter-category"
+                    name="category"
+                >
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    <option
+                        value="Food"
+                        {% if category == "Food" %}selected{% endif %}
+                    >
+                        Food
+                    </option>
+
+                    <option
+                        value="Travel"
+                        {% if category == "Travel" %}selected{% endif %}
+                    >
+                        Travel
+                    </option>
+
+                    <option
+                        value="Shopping"
+                        {% if category == "Shopping" %}selected{% endif %}
+                    >
+                        Shopping
+                    </option>
+
+                    <option
+                        value="Bills"
+                        {% if category == "Bills" %}selected{% endif %}
+                    >
+                        Bills
+                    </option>
+
+                    <option
+                        value="Entertainment"
+                        {% if category == "Entertainment" %}selected{% endif %}
+                    >
+                        Entertainment
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- FROM DATE -->
+
+            <div>
+
+                <label for="from-date">
+                    From Date
+                </label>
+
+                <input
+                    id="from-date"
+                    type="date"
+                    name="from_date"
+                    value="{{ from_date }}"
+                >
+
+            </div>
+
+
+            <!-- TO DATE -->
+
+            <div>
+
+                <label for="to-date">
+                    To Date
+                </label>
+
+                <input
+                    id="to-date"
+                    type="date"
+                    name="to_date"
+                    value="{{ to_date }}"
+                >
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="filter-buttons">
+
+                <button type="submit">
+                    Apply Filter
+                </button>
+
+                <a href="/">
+                    Clear Filters
+                </a>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- ==========================================
+         EXPENSE LIST
+    =========================================== -->
+
+    <div class="card">
+
+        <h2>Recent Expenses</h2>
+
+
+        {% if expenses %}
+
+
+            {% for expense in expenses %}
+
+
+                <div class="expense">
+
+
+                    <!-- EXPENSE INFORMATION -->
+
+                    <div class="expense-info">
+
+                        <h3>
+                            {{ expense.title }}
+                        </h3>
+
+
+                        <p>
+
+                            <strong>
+                                Amount:
+                            </strong>
+
+                            ₹{{ "%.2f"|format(expense.amount) }}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Category:
+                            </strong>
+
+                            {{ expense.category }}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Date:
+                            </strong>
+
+                            {{ expense.date }}
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- ACTION BUTTONS -->
+
+                    <div class="expense-actions">
+
+
+                        <a href="/edit/{{ expense.id }}">
+
+                            <button
+                                type="button"
+                                class="edit-btn"
+                            >
+                                Edit
+                            </button>
+
+                        </a>
+
+
+                        <a href="/delete/{{ expense.id }}">
+
+                            <button
+                                type="button"
+                                class="delete-btn"
+                            >
+                                Delete
+                            </button>
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <p class="no-expenses">
+                No expenses found.
+            </p>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+    <!-- ==========================================
+         CATEGORY SUMMARY
+    =========================================== -->
+
+    <div class="card">
+
+        <h2>Expense by Category</h2>
+
+
+        {% if category_data %}
+
+
+            {% for category_name, amount in category_data %}
+
+
+                <div class="category-row">
+
+                    <span>
+                        {{ category_name }}
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(amount) }}
+                    </strong>
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <p>
+                No category data available.
+            </p>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+    <!-- ==========================================
+         PIE CHART
+    =========================================== -->
+
+    <div class="card chart-card">
+
+        <h2>Expense Distribution</h2>
+
+
+        <div
+            class="chart-container"
+            id="chartData"
+            data-labels='{{ category_labels | tojson }}'
+            data-values='{{ category_amounts | tojson }}'
+        >
+
+            <canvas id="expenseChart"></canvas>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ==========================================
+     CHART.JS SCRIPT
+=========================================== -->
+
+<script>
+
+    const chartDataElement =
+        document.getElementById("chartData");
+
+
+    const categoryLabels =
+        JSON.parse(
+            chartDataElement.dataset.labels
+        );
+
+
+    const categoryAmounts =
+        JSON.parse(
+            chartDataElement.dataset.values
+        );
+
+
+    const chartCanvas =
+        document.getElementById("expenseChart");
+
+
+    if (
+        chartCanvas &&
+        categoryLabels.length > 0
+    ) {
+
+        new Chart(
+            chartCanvas,
+            {
+
+                type: "pie",
+
+
+                data: {
+
+                    labels: categoryLabels,
+
+                    datasets: [
+                        {
+                            data: categoryAmounts
+                        }
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false
+
+                }
+
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,485 @@
+/* ==========================================
+   GENERAL
+========================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    padding: 0;
+
+    font-family: Arial, sans-serif;
+
+    background-color: #f4f6f8;
+
+    color: #333;
+
+}
+
+
+/* ==========================================
+   MAIN CONTAINER
+========================================== */
+
+.container {
+
+    width: 90%;
+
+    max-width: 1100px;
+
+    margin: 40px auto;
+
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.header {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+
+}
+
+
+.header h1 {
+
+    margin-bottom: 8px;
+
+}
+
+
+.header p {
+
+    color: #777;
+
+}
+
+
+/* ==========================================
+   CARD
+========================================== */
+
+.card {
+
+    background-color: white;
+
+    padding: 25px;
+
+    margin-bottom: 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.1);
+
+}
+
+
+.card h2 {
+
+    margin-top: 0;
+
+    margin-bottom: 20px;
+
+    color: #2c3e50;
+
+}
+
+
+/* ==========================================
+   STATISTICS
+========================================== */
+
+.stats-container {
+
+    display: flex;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.stat-card {
+
+    flex: 1;
+
+    padding: 25px;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.1);
+
+}
+
+
+.stat-card h3 {
+
+    margin-top: 0;
+
+    color: #555;
+
+}
+
+
+.stat-card p {
+
+    font-size: 28px;
+
+    font-weight: bold;
+
+    margin-bottom: 0;
+
+}
+
+
+/* ==========================================
+   FORM
+========================================== */
+
+form {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+label {
+
+    margin-top: 12px;
+
+    margin-bottom: 6px;
+
+    font-weight: bold;
+
+}
+
+
+input,
+select {
+
+    padding: 11px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    font-size: 15px;
+
+}
+
+
+input:focus,
+select:focus {
+
+    outline: none;
+
+    border-color: #3498db;
+
+}
+
+
+/* ==========================================
+   BUTTON
+========================================== */
+
+button {
+
+    padding: 11px 18px;
+
+    margin-top: 15px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #3498db;
+
+    color: white;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+}
+
+
+button:hover {
+
+    opacity: 0.9;
+
+}
+
+
+/* ==========================================
+   FILTER FORM
+========================================== */
+
+.filter-form {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+
+}
+
+
+.filter-form div {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.filter-buttons {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+
+.filter-buttons a {
+
+    margin-top: 15px;
+
+    text-decoration: none;
+
+    color: #3498db;
+
+}
+
+
+/* ==========================================
+   EXPENSE
+========================================== */
+
+.expense {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 18px;
+
+    margin-bottom: 15px;
+
+    background-color: #f8f9fa;
+
+    border-radius: 8px;
+
+    border: 1px solid #eee;
+
+}
+
+
+.expense h3 {
+
+    margin-top: 0;
+
+    margin-bottom: 10px;
+
+}
+
+
+.expense p {
+
+    margin: 5px 0;
+
+}
+
+
+.expense-actions {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.expense-actions a {
+
+    text-decoration: none;
+
+}
+
+
+/* ==========================================
+   EDIT BUTTON
+========================================== */
+
+.edit-btn {
+
+    background-color: #f39c12;
+
+}
+
+
+/* ==========================================
+   DELETE BUTTON
+========================================== */
+
+.delete-btn {
+
+    background-color: #e74c3c;
+
+}
+
+
+/* ==========================================
+   NO EXPENSES
+========================================== */
+
+.no-expenses {
+
+    text-align: center;
+
+    color: #777;
+
+    padding: 20px;
+
+}
+
+
+/* ==========================================
+   CATEGORY SUMMARY
+========================================== */
+
+.category-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid #eee;
+
+}
+
+
+.category-row:last-child {
+
+    border-bottom: none;
+
+}
+
+
+/* ==========================================
+   CHART
+========================================== */
+
+.chart-card {
+
+    text-align: center;
+
+}
+
+
+.chart-container {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 500px;
+
+    height: 400px;
+
+    margin: auto;
+
+}
+
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 768px) {
+
+
+    .container {
+
+        width: 95%;
+
+        margin: 20px auto;
+
+    }
+
+
+    .stats-container {
+
+        flex-direction: column;
+
+    }
+
+
+    .filter-form {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .expense {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+    }
+
+
+    .expense-actions {
+
+        width: 100%;
+
+    }
+
+
+    .expense-actions button {
+
+        margin-top: 0;
+
+    }
+
+
+    .chart-container {
+
+        height: 300px;
+
+    }
+
+}

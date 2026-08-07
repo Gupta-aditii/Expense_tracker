@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Edit Expense</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Edit Expense</h1>
+
+        <form action="/edit/{{ expense.id }}" method="POST">
+
+            <label>Title</label><br>
+
+            <input
+                type="text"
+                name="title"
+                value="{{ expense.title }}"
+                required
+            >
+
+            <br><br>
+
+
+            <label>Amount</label><br>
+
+            <input
+                type="number"
+                name="amount"
+                value="{{ expense.amount }}"
+                required
+            >
+
+            <br><br>
+
+
+            <label>Category</label><br>
+
+            <select name="category">
+
+                <option
+                    {% if expense.category == "Food" %}selected{% endif %}
+                >
+                    Food
+                </option>
+
+                <option
+                    {% if expense.category == "Travel" %}selected{% endif %}
+                >
+                    Travel
+                </option>
+
+                <option
+                    {% if expense.category == "Shopping" %}selected{% endif %}
+                >
+                    Shopping
+                </option>
+
+                <option
+                    {% if expense.category == "Bills" %}selected{% endif %}
+                >
+                    Bills
+                </option>
+
+                <option
+                    {% if expense.category == "Entertainment" %}selected{% endif %}
+                >
+                    Entertainment
+                </option>
+
+            </select>
+
+            <br><br>
+
+
+            <label>Date</label><br>
+
+            <input
+                type="date"
+                name="date"
+                value="{{ expense.date }}"
+                required
+            >
+
+            <br><br>
+
+
+            <button type="submit">
+                Update Expense
+            </button>
+
+        </form>
+
+        <br>
+
+        <a href="/">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
